@@ -1,3 +1,5 @@
+Define 10 elements in ROM. Transfer this data into RAM.
+
 AREA   reset, DATA, READONLY
 	EXPORT __Vectors
 __Vectors
