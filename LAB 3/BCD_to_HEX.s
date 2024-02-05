@@ -1,4 +1,4 @@
-AREA   reset, DATA, READONLY
+	AREA   reset, DATA, READONLY
 	EXPORT __Vectors
 __Vectors
 	DCD 0X10001000 
