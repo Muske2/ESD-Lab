@@ -28,6 +28,7 @@ down
 	TEQ R2,#0
 	BEQ down2
 	ADD R5,#1
+	MOV R2,R7
 	BNE down
 down2 MUL R6,R5,R7
 STOP B STOP
