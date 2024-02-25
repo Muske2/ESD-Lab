@@ -22,9 +22,9 @@ Reset_Handler
 	MOV R7,R2   ;UPDATING R7 ALSO 
 down
 	MUL R2,R5   ;i*a
-	SUB R2,R3    ;repeated subtraction
+down3	SUB R2,R3    ;repeated subtraction
 	CMP R2,R3    ;diff<smaller num[r3]=b
-	BCS down
+	BCS down3
 	TEQ R2,#0
 	BEQ down2
 	ADD R5,#1
@@ -33,4 +33,4 @@ down
 down2 MUL R6,R5,R7
 STOP B STOP
 n1 DCD 32
-n2 DCD 8
+n2 DCD 14
