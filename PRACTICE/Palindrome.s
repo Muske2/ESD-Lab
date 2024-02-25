@@ -1,0 +1,41 @@
+;Check for palindrome and if it is a palindrome count number of binary 1s.
+  AREA RESET,DATA,READONLY
+	EXPORT __Vectors
+__Vectors
+	DCD 0X10001000
+	DCD Reset_Handler
+	ALIGN 
+	AREA mycode,CODE,READONLY
+	ENTRY
+	EXPORT Reset_Handler
+Reset_Handler
+	LDR R0,=SRC
+	LDR R1,[R0]
+	LDR R2,[R0]
+	MOV R5,#0X01
+	MOV R6,#0X80000000
+	MOV R7,#16
+	MOV R9,#31
+	MOV R10,#0
+UP	AND R3,R1,R5
+	AND R4,R2,R6
+	LSR R4,R9
+	LSR R3,R10
+	SUB R9,#1
+	ADD R10,#1
+	LSR R6,#1
+	LSL R5,#1
+	TEQ R3,R4
+	BNE DOWN
+	ADD R8,R8,R4
+	ADD R8,R8,R3;number of 1s stored.
+	MOV R3,#0
+	MOV R4,#0
+	SUBS R7,#1
+	BNE UP
+STOP
+DOWN 
+	B STOP
+SRC DCD 0X80081001
+	AREA mydata,DATA,READWRITE
+	END
