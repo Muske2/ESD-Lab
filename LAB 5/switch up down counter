@@ -1,0 +1,36 @@
+#include<LPC17XX.h>
+
+int main()
+{
+	unsigned int i;
+	unsigned long y=0,X;
+	LPC_PINCON->PINSEL0&=0Xff0000ff;
+	//LPC_PINCON->PINSEL1&=0XFFFFFFFC;
+	LPC_PINCON->PINSEL4&=0XFCFFFFFF;
+	LPC_GPIO0->FIODIR|=0Xff0;
+	LPC_GPIO2->FIODIR&=0XFFFFEFFF;
+	while(1)
+	{
+		X=LPC_GPIO2->FIOPIN&1<<12;
+		if(X)
+		{
+		LPC_GPIO0->FIOPIN=y<<4;
+		for(i=0;i<10000000;i++);
+		y=y+1;
+		if(y==255)
+		{
+			y=0;
+		}
+		}
+		else
+		{
+			LPC_GPIO0->FIOPIN=y<<4;
+		for(i=0;i<10000000;i++);
+		y=y-1;
+		if(y==0)
+		{
+			y=255;
+		}
+		}
+	}
+}
