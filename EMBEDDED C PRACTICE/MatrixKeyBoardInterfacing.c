@@ -1,7 +1,7 @@
 #include<LPC17xx.h>
 #include<stdio.h>
 
-unsigned char sevseg[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+unsigned char sevseg[16]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
 unsigned int row,key,col,flag=0;
 unsigned long X,i;
 void disp(int key);
@@ -15,9 +15,9 @@ int main()
 	LPC_PINCON->PINSEL1&=0XFFFFFFC0;
 	
 	LPC_GPIO0->FIODIR|=0X00078FF0;
-	LPC_GPIO1->FIODIR|=0X00000000;
+	LPC_GPIO1->FIODIR=0X00000000;
 	LPC_GPIO2->FIODIR|=0X00003C00;
-	
+	while(1){
 	for(row=0;row<4;row++)
 	{
 		LPC_GPIO2->FIOPIN=1<<(10+row);
@@ -30,10 +30,11 @@ int main()
 		}
 	}
 }
+}
 
 void scan()
 {
-	X=LPC_GPIO1->FIOPIN&=(0XFF<<23);
+	X=LPC_GPIO1->FIOPIN&=(0XF<<23);
 	if(X!=0)
 	{
 		flag=0xff; //means key is pressed
@@ -59,7 +60,8 @@ void scan()
 
 void disp(int key)
 {
-	LPC_GPIO0->FIOMASK=0XFFFFF00F;
-	LPC_GPIO0->FIOPIN=sevseg[key]<<4;
-	for(i=0;i<5000;i++);
+	LPC_GPIO0->FIOPIN=0<<15;
+	LPC_GPIO0->FIOPIN|=sevseg[key]<<4;
+	for(i=0;i<6000;i++);
+	//LPC_GPIO0->FIOCLR=0X00000FF0;
 }
