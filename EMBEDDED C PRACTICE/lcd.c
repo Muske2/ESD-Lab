@@ -5,7 +5,8 @@
 
 unsigned char msg[]={"BIRYANI"};
 unsigned long int init_command[]={0x30,0x30,0x30,0x20,0x28,0x0C,0X06,0X01,0X80};
-unsigned int flag1=0,i,temp1,flag2,temp2;
+unsigned long int temp1=0,i,temp2=0;
+unsigned char flag1=0,flag2=0;
 
 void lcd_write(void);
 void port_write(void);
@@ -13,6 +14,9 @@ void delay_led(unsigned int rl);
 
 int main()
 {
+	
+	SystemInit();
+	SystemCoreClockUpdate();
    LPC_PINCON->PINSEL1&=0XFC003FFF;
    LPC_GPIO0->FIODIR|=0X1F800000;
    flag1=0;
@@ -26,7 +30,15 @@ int main()
    while(msg[i++]!='\0')
    {
      temp1=msg[i];
-	 lcd_write();
+	   lcd_write();
+		 i++;
+		 if(i==16)
+		 {
+			flag1=0;
+			temp1=0xC0;
+			lcd_write(); 
+			flag1=1;
+		 }
    }
    while(1);
 }
