@@ -3,8 +3,8 @@
 #define RS_CTRL 0X08000000
 #define EN_CTRL 0X10000000
 
-unsigned long int init_command[]={0x30,0x30,0x30,0x30,0x28,0x0C,0X06,0X01,0X80};
-unsigned long int temp1=0,i,temp2=0,X=0;
+unsigned long int init_command[]={0x30,0x30,0x30,0x20,0x28,0x0C,0X06,0X01,0X80};
+unsigned long int temp1=0,i,temp2=0,X=0,a;
 unsigned char flag1=0,flag2=0;
 
 void lcd_write(void);
@@ -27,16 +27,29 @@ int main()
    flag1=1;
    while(1)
    {
-        temp1=(X/1000)<<4|(X/100);
+        a=(X/1000);
+		    temp1='0'+a;
+		    lcd_write();
+		    a=(X/100);
+		    temp1='0'+a;
         lcd_write();
-        temp1=(X/10)<<4|X%10; 
+        a=(X/10);
+		    temp1='0'+a;
+		    lcd_write();
+		    a=X%10; 
+		    temp1='0'+a;
         lcd_write();
         X++;
+		    flag1=0;
+		    temp1=0x80;
+			lcd_write(); 
+			flag1=1;
         if(X==10000)
         {
             X=0;
         }
    }
+	 while(1);
 }
 
 void lcd_write()
@@ -48,8 +61,8 @@ void lcd_write()
   if(!flag2)
   {
     temp2=temp1&0x0F;
-	temp2=temp2<<23;
-	port_write();
+	  temp2=temp2<<23;
+	  port_write();
   }
 }
 
@@ -67,7 +80,7 @@ void port_write()
 	LPC_GPIO0->FIOSET=EN_CTRL;
 	delay_led(25);
 	LPC_GPIO0->FIOCLR=EN_CTRL;
-	delay_led(5000);
+	delay_led(5000000);
 }
 
 void delay_led(unsigned int rl)
