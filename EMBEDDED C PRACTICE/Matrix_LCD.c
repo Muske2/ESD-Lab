@@ -82,7 +82,7 @@ void port_write()
 	LPC_GPIO0->FIOSET=EN_CTRL;
 	delay_led(25);
 	LPC_GPIO0->FIOCLR=EN_CTRL;
-	delay_led(5000000);
+	delay_led(50000);
 }
 
 void scan()
