@@ -44,6 +44,10 @@ int main()
 			unsigned int random_index = rand() % 6;
 			temp1=die[random_index]; 
 			 lcd_write();
+			 flag1=0;
+		  temp1=0x80;
+			lcd_write();
+			flag1=1;
 		 }
    }
    while(1);
