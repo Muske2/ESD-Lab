@@ -1,0 +1,58 @@
+#include <LPC17xx.h>
+#include <stdio.h>
+ 
+unsigned int i,j;
+unsigned long X;
+int main()
+{
+	SystemInit();
+	SystemCoreClockUpdate();
+	LPC_PINCON->PINSEL0&=0XFF0000FF;
+	LPC_GPIO0->FIODIR|=0X00000FF0;
+  LPC_PINCON->PINSEL3|= 0x30000000; //p1.30 as AD0.4
+	LPC_PINCON->PINSEL3|= 0xC0000000; //p1.31 as AD0.5
+	LPC_SC->PCONP |=1<<12;
+	LPC_ADC->ADCR = 1<<4 | 1<<5 | 1<<16 |1<<21;
+	LPC_ADC->ADINTEN = 1<<4;
+	NVIC_EnableIRQ(ADC_IRQn);
+	while(1);
+}
+void ADC_IRQHandler()
+{  int x;
+  int channel, temp1, temp2;
+  x = (LPC_ADC->ADDR4 &0XFFF<<4)>>4;
+  if (x>0 && x<513)
+  {
+		LPC_GPIO0->FIOPIN=1<<4;
+  }
+	else if (x>512 && x<1025)
+  {
+		LPC_GPIO0->FIOPIN=3<<4;
+  }
+	else if (x>1024 && x<1537)
+  {
+		LPC_GPIO0->FIOPIN=7<<4;
+  }
+	else if (x>1536 && x<2049)
+  {
+		LPC_GPIO0->FIOPIN=0xF<<4;
+  }
+	else if (x>2048 && x<2561)
+  {
+		LPC_GPIO0->FIOPIN=0x1F<<4;
+  }
+	else if (x>2560 && x<3073)
+  {
+		LPC_GPIO0->FIOPIN=0x3F<<4;
+  }
+	else if (x>3072 && x<3585)
+  {
+		LPC_GPIO0->FIOPIN=0x7F<<4;
+  }
+	else if (x>3584 && x<4097)
+  {
+		LPC_GPIO0->FIOPIN=0xFF<<4;
+  }
+
+
+}
